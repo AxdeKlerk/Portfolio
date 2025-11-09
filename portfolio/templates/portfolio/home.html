@@ -1,1 +1,9 @@
-<h1>Hello Ax!</h1>
+{% extends 'base.html' %}
+{% load static %}
+{% load cloudinary %}
+
+{% block content %}
+<div class="hero-section">
+    <img src="{% static 'images/dymo-me.jpg' %}" alt="Ax's name label" class="hero-center-img">
+</div>
+{% endblock %}

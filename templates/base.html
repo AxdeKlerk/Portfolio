@@ -10,15 +10,41 @@
     <title>Portfolio</title>
 </head>
 <body>
-    <header>
-        <h1></h1>
-    </header>
-    <main>
-        {% block content %} {% endblock %}
-    </main>
-    <footer>
-        <p class="text-center">&copy; 2025 /*axdesigns*/</p>
-    </footer>
+    <div class="site-frame">
+        <nav class="navbar navbar-dark bg-dark fixed-top">
+            <div class="container-fluid justify-content-evenly">
+                <div class="navbar-icons d-flex flex-wrap justify-content-center">
+                    <a href="{% url 'portfolio:home' %}" class="icon-link {% if page == 'home' %}active{% endif %}">
+                        <img src="{% static 'images/dymo-home.jpg' %}" alt="Home label" class="nav-img">
+                    </a>
+                    <a href="{% url 'portfolio:about' %}" class="icon-link {% if page == 'about' %}active{% endif %}">
+                        <img src="{% static 'images/dymo-about.jpg' %}" alt="About label" class="nav-img">
+                    </a>
+                    <a href="{% url 'portfolio:cv' %}" class="icon-link {% if page == 'cv' %}active{% endif %}">
+                        <img src="{% static 'images/dymo-cv.jpg' %}" alt="CV label" class="nav-img">
+                    </a>                   
+                    <a href="{% url 'portfolio:projects' %}" class="icon-link {% if page == 'projects' %}active{% endif %}">
+                        <img src="{% static 'images/dymo-projects.jpg' %}" alt="Projects label" class="nav-img">
+                    </a>
+                    <a href="{% url 'portfolio:blog' %}" class="icon-link {% if page == 'blog' %}active{% endif %}">
+                        <img src="{% static 'images/dymo-blog.jpg' %}" alt="Blog label" class="nav-img">
+                    </a>
+                </div>
+            </div>
+        </nav>
+        <main>
+            {% block content %}{% endblock %}
+        </main>
+        <footer class="global-footer text-center">
+            <div class="footer-contact">
+                <a href="{% url 'portfolio:contact' %}" class="icon-link {% if page == 'contact' %}active{% endif %}">
+                    <img src="{% static 'images/dymo-contact.jpg' %}" alt="Contact label" class="nav-img" >
+                </a>
+            </div>
+            <p>&copy; 2025 /*axdesigns*/</p>
+        </footer>
+    </div>
+</body>
 </html>
 
 
