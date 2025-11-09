@@ -2,17 +2,19 @@
 {% load static %}
 {% load cloudinary %}
 
+{% block body_class %}standard-page{% endblock %}
+
 {% block content %}
-<div class="container global">
+<div class="container about-section">
   <div class="row justify-content-center">
-    <div class="col-11 text-center mb-4">
+    <div class="col-12 text-center mb-4">
       <h1>Welcome to my portfolio!</h1>
         <p>Here you can find information about my projects, skills, and experience.</p>
     </div>
   </div>
 
   <div class="row justify-content-center align-items-center">
-    <div class="col-11 col-md-4 text-center">
+    <div class="col-11 col-md-5 col-lg-4 col-xl-3 text-center">
           <img src="{{ about.profile_image.url }}" class="img-fluid about-img" alt="{{ about.name }}" style="max-width:250px;">
     </div>
 
@@ -23,17 +25,17 @@
   </div>
 
   <div class="row justify-content-center mt-4">
-    <div class="col-11 col-md-10 text-justify">
+    <div class="col-11 text-justify">
       <h3>From Kitchen to Code</h3>
       <p>Years in professional kitchens taught me more than recipes and heat — they taught me the art of precision, consistency, flow, and creating something visually captivating yet functionally reliable and technically sound.</p>
-      <p>I bring that same discipline to development: clear planning, methodical thinking, and an obsession with refining the process until everything works just right. Whether it’s HTML, CSS, JavaScript, Bootstrap, Python or Django, I approach each tool like an ingredient, knowing it’s the balance between them that makes something truly outstanding.</p>
-
+      <p>I bring that same discipline to development: clear planning, methodical thinking, and an obsession with refining the process until everything works just right. Whether it’s <em>HTML</em>, <em>CSS</em>, <em>JavaScript</em>, <em>Bootstrap</em>, <em>Python</em> or <em>Django</em>, I approach each tool like an ingredient, knowing it’s the balance between them that makes something truly outstanding.</p>
+      <br>
       <h3>Learning Never Stops</h3>
       <p>After completing my Level 5 Full Stack Development course with the Code Institute, it took me less than a week to feel that familiar itch — the one that says, “you’re not done yet.” So, I took advantage of a discount offer and dove straight into a Codecademy subscription to keep building on that momentum to continue to learn. I have always loved learning — it’s something that feels less like an obligation to stay informed and more like a personal drive to grow and explore new ideas.</p>
-
+      <br>
       <h3>Before the Code</h3>
       <p>Before tech, my path led through Criminology and Criminal Justice Policy, earning a First-Class degree and postgraduate study at the London School of Economics and Political Science. That experience honed my analytical mindset and love for detail, which now drive how I debug, test, and design.</p>
-
+      <br>
       <h3>Beyond the Screen</h3>
       <p>Outside of code, I’m still very much the same creative at heart — a proud metalhead who finds calm in structure, fuel in caffeine, and inspiration in everyday rhythm. I’m at my happiest standing in a field, beer in hand, watching live music surrounded by people who share that same pulse of passion — laughing, shouting lyrics, and soaking up the energy that only a live crowd can bring.</p>
       <p>That same rush I feel in front of a live stage often mirrors the flow I chase while coding — both driven by rhythm, emotion, and a desire to make something that moves people. My mornings start with Barry, my loyal sidekick, before settling into projects that blend logic with artistry — from building functional web apps to experimenting with design in Figma.</p>
@@ -41,12 +43,8 @@
   </div>
   
   <div class="row justify-content-center mt-4">
-    <div class="col-11 text-center">
-      <h6>Connect with Me</h6>
-      <p>
-        <a href="{{ about.github_link }}" target="_blank">GitHub</a> |
-        <a href="{{ about.linkedin_link }}" target="_blank">LinkedIn</a>
-      </p>
+    <div class="col-11 text-justify">
+      <p>Feel free to explore my projects, read my blog, or reach out via the contact page. I'm always excited to connect with fellow developers, creatives, and anyone passionate about technology and design.</p>
     </div>
   </div>
 </div>
