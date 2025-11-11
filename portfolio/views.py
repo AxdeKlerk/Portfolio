@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import About
+from .models import About, Blog
 
 def home(request):
     return render(request, 'portfolio/home.html', {'page': 'home'})
@@ -11,8 +11,9 @@ def about(request):
 def projects(request):
     return render(request, 'portfolio/projects.html', {'page': 'projects'})
 
-def blog(request):
-    return render(request, 'portfolio/blog.html', {'page': 'blog'})
+def blog_list(request):
+    blogs = Blog.objects.all().order_by('-published_date')
+    return render(request, 'portfolio/blog.html', {'page': 'blog', 'blogs': blogs })
 
 def cv(request):
     return render(request, 'portfolio/cv.html', {'page': 'cv'})
