@@ -12,11 +12,17 @@ class About(models.Model):
 
 class Blog(models.Model):
     title = models.CharField(max_length=200, blank=False, null=False)
-    summary = models.CharField(max_length=500, blank=True, null=True)
+    slug = models.SlugField(max_length=200, unique=True, blank=True, null=False)
+    summary = models.TextField(max_length=800, blank=True, null=True)
     blog_image = CloudinaryField('image', blank=True, null=True)
-    content = models.TextField()
-    author = models.CharField(max_length=100, default='Admin')
+    content = models.TextField(blank=False, null=False)
+    author = models.CharField(max_length=100, default='Ax de Klerk')
     published_date = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.title

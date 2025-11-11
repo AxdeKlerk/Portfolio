@@ -91,3 +91,38 @@ VS Code now shows ignored files by default, which can easily lead to accidental 
 
 ---
 
+## Database Integrity Error
+
+**Bug:**  
+When I added the new `slug` field to my `Blog` model in **Django**, migrations failed with the error:  
+`django.db.utils.IntegrityError: UNIQUE constraint failed: portfolio_blog.slug`.  
+
+This happened because existing blog entries in the database had no slugs yet, and **Django** tried to insert empty strings (`""`) into a field marked as `unique=True`. Since all rows had the same empty value, the database rejected it.
+
+**Fix:**  
+I removed the `unique=True` constraint temporarily to allow the field to be added safely. Then I recreated the migration so the database schema matched the model. To confirm that the `slug` column didn’t exist before regenerating migrations, I used a **SQLite** `PRAGMA` check in the shell:
+
+    from portfolio.models import Blog
+    from django.db import connection
+    cursor = connection.cursor()
+    cursor.execute("PRAGMA table_info(portfolio_blog);")
+    print(cursor.fetchall())
+
+The output showed there was no `slug` column. After deleting the broken migration, I created a fresh one and ran `makemigrations` and `migrate` again. Once the `slug` column appeared in the `PRAGMA` output, I populated slugs manually:
+
+    from portfolio.models import Blog
+    from django.utils.text import slugify
+
+    for post in Blog.objects.all():
+        if not post.slug:
+            post.slug = slugify(post.title)
+            post.save()
+
+After confirming that each blog post had a proper slug, I re-enabled `unique=True` and migrated again. This ensured that all future slugs remain unique while avoiding duplicate constraint errors.
+
+**Lesson Learned:**  
+Adding a `unique=True` field to a model that already contains data can cause migration errors if existing rows don’t have values. The safe approach is to first create the field without uniqueness, populate it, and only then enforce uniqueness. This two-step migration avoids data conflicts and keeps both **Django** and the database schema in sync.
+
+---
+
+

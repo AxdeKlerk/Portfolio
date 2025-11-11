@@ -45,12 +45,12 @@
         <footer class="global-footer text-center">
             <div class="footer-contact">
                 <a href="{% url 'portfolio:contact' %}" class="icon-link {% if page == 'contact' %}active{% endif %}">
-                    <img src="{% static 'images/dymo-contact.jpg' %}" alt="Contact label" class="nav-img mb-3">
+                    <img src="{% static 'images/dymo-contact.jpg' %}" alt="Contact label" class="nav-img mb-4">
                 </a>
-                <a href="{{ about.linkedin_link }}" class="links" target="_blank"><strong>LinkedIn</strong></a>
-                <a href="{{ about.github_link }}" class="links" target="_blank"><strong>GitHub</strong></a>
+                <a href="{{ about.linkedin_link }}" class="links fs-5 px-4" target="_blank">LinkedIn</a>
+                <a href="{{ about.github_link }}" class="links fs-5 px-4" target="_blank">GitHub</a>
             </div>
-            <p>&copy; <strong>2025 /*axdesigns*/</strong></p>
+            <p class="mt-3">&copy; 2025 /*axdesigns*/</p>
         </footer>
     </div>
 </body>
