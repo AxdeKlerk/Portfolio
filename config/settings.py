@@ -26,6 +26,9 @@ cloudinary.config(
     api_key=os.getenv('CLOUD_API_KEY'),
     api_secret=os.getenv('CLOUD_API_SECRET'),
 )
+# Force Cloudinary to handle static files in production
+if ENVIRONMENT == 'production':
+    STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'portfolio-5y32.onrender.com']
 
