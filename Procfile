@@ -1,2 +1,3 @@
-web: gunicorn config.wsgi:application
+web: cd Portfolio && gunicorn config.wsgi:application
+
 
