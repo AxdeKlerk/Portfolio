@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load cloudinary %}
+
+{% block body_class %}standard-page{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="mb-4">
+            <a href="{% url 'portfolio:blog' %}" class="btn back-btn fs-6">← Back to all posts</a>
+        </div>
+        <div class="col-lg-8">
+            <div class="card blog-detail-card blog-text">
+                {% if blog.blog_image %}
+                <img src="{{ blog.blog_image.url }}" class="blog-detail-img img-fluid" alt="{{ blog.title }}">
+                {% endif %}
+                <div class="card-body">
+                    <h1 class="card-title mb-3">{{ blog.title }}</h1>
+                    <p class="mb-4">
+                        <small>By {{ blog.author }} | {{ blog.published_date|date:"d M Y" }}</small>
+                    </p>
+                    <p class="card-text">{{ blog.content|safe }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
