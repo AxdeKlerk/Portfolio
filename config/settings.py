@@ -27,7 +27,7 @@ cloudinary.config(
     api_secret=os.getenv('CLOUD_API_SECRET'),
 )
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'https://portfolio-5y32.onrender.com']
 
 
 # Application definition
