@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .models import About, Blog
+from .models import About, Blog, Project
 
 def home(request):
     return render(request, 'portfolio/home.html', {'page': 'home'})
@@ -9,7 +9,8 @@ def about(request):
     return render(request, 'portfolio/about.html', {'page': 'about', 'about': about})
 
 def projects(request):
-    return render(request, 'portfolio/projects.html', {'page': 'projects'})
+    projects = Project.objects.all().order_by('-submission_date')
+    return render(request, 'portfolio/projects.html', {'page': 'project', 'projects' : projects})
 
 def blog_list(request):
     blogs = Blog.objects.all().order_by('-published_date')

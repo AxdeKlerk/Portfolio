@@ -4,9 +4,10 @@
 /* Global settings */
 html, body {
     margin: 0;
-    padding: 0;
+    padding: 0 0.5rem;
     height: 100%;
     width: 100%;
+    /*box-sizing: border-box;*/
     font-family: 'Geist Mono', monospace;
     color: #000000;
     font-size: 14px;
@@ -125,6 +126,8 @@ main {
 /* About */
 .about-section {
     background-color: #a59e9e;
+    margin: 0 auto;
+    padding: 0 1rem;
 }
 .about-img {
     border-color: #E0A029;
@@ -142,8 +145,18 @@ main {
 
 
 /* Projects page */
-
-
+.project-img {
+    border-color: #B22F10;
+    border-width: 2px;
+    border-style: solid;
+    max-width: 500px;
+    width: 100%;
+    max-height: 250px;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    margin-bottom: 10px;
+}
 
 /* Blog page */
 .blog-card {
@@ -240,8 +253,7 @@ main {
     }
     .nav-img {
         height: 2rem;
-    }    
-
+    }
 }
 
 /* On medium screens */

@@ -1,5 +1,6 @@
 from django.db import models
 from cloudinary.models import CloudinaryField
+from django.utils.text import slugify
 
 class About(models.Model):
     name = models.CharField(max_length=100, blank=True, null=True)
@@ -23,6 +24,17 @@ class Blog(models.Model):
         if not self.slug:
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title
+    
+class Project(models.Model):
+    title = models.CharField(max_length=200, blank=False, null=False)
+    project_image = CloudinaryField('image', blank=True, null=True)
+    description = models.TextField(blank=False, null=False)
+    deployed_project_link = models.URLField(blank=True, null=True)
+    github_link = models.URLField(blank=True, null=True)
+    submission_date = models.DateTimeField(blank=False, null=False)
 
     def __str__(self):
         return self.title
