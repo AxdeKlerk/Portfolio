@@ -122,6 +122,9 @@ main {
     width: auto;
     z-index: 5;
 }
+.home-page .global-footer a{
+    color: #A59E9E;
+}
 
 /* About */
 .about-section {
@@ -142,7 +145,17 @@ main {
 }
 
 /* CV page */
-
+.cv-section {
+    background-color: #a59e9e;
+    margin: 0 auto;
+    padding: 0;
+}
+.cv-card {
+    padding: 5px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    background-color: #a59e9e;
+}
 
 /* Projects page */
 .project-img {

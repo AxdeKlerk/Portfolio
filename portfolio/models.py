@@ -2,6 +2,7 @@ from django.db import models
 from cloudinary.models import CloudinaryField
 from django.utils.text import slugify
 
+
 class About(models.Model):
     name = models.CharField(max_length=100, blank=True, null=True)
     profile_image = CloudinaryField('image', blank=True, null=True)
@@ -10,6 +11,7 @@ class About(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class Blog(models.Model):
     title = models.CharField(max_length=200, blank=False, null=False)
@@ -27,7 +29,8 @@ class Blog(models.Model):
 
     def __str__(self):
         return self.title
-    
+
+
 class Project(models.Model):
     title = models.CharField(max_length=200, blank=False, null=False)
     project_image = CloudinaryField('image', blank=True, null=True)
@@ -38,3 +41,13 @@ class Project(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class CV(models.Model):
+    cv_image_page_1 = CloudinaryField('cv_image_page_1', blank=False, null=False)
+    cv_image_page_2 = CloudinaryField('cv_image_page_2', blank=True, null=True)
+    pdf_cv_link = CloudinaryField('pdf_cv_link', resource_type='raw', blank=False, null=False)
+    doc_cv_link = CloudinaryField('doc_cv_link', resource_type='raw', blank=True, null=True)
+
+    def __str__(self):
+        return "CV File"
