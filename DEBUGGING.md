@@ -285,3 +285,105 @@ No code fix required — this delay is caused by **Render**’s container initia
 
 ---
 
+## Remote: Internal Server Error
+
+**Bug:**  
+I tried to push to **Github** and received:
+`remote: Internal Server Error` followed by `! [remote rejected] main -> main (Internal Server Error)`. The push failed even though my remote was reachable and credentials were fine.
+
+**Fix:**  
+
+**What I Saw (Symptoms):**  
+- Push to **Github** failed with `Internal Server Error`.  
+- No local Git errors; only the remote rejected the update.
+
+**Diagnostics (Step-by-step):**  
+
+**Step 1 — Confirm local repo state**  
+I checked the working tree and remote config to rule out local issues.
+    
+    git status
+    git remote -v
+
+Result: clean working tree; remote URL pointed to my repo on **Github**.
+
+**Step 2 — Verify remote availability**  
+I confirmed the remote was reachable and the branch existed.
+
+    git ls-remote origin
+
+Result: returned `HEAD` and `refs/heads/main` hashes successfully (so **Github** was reachable).
+
+**Step 3 — Check local object health**  
+I ran a full integrity check to ensure no corrupt local objects.
+
+    git fsck --full
+
+Result: no issues reported.
+
+**Step 4 — Eliminate transient server hiccup**  
+I retried a normal push:
+
+    git push origin main
+
+Result: same `Internal Server Error`. This suggested a branch-specific issue on **Github**, not connectivity.
+
+**Step 5 — Control test with a new branch**  
+I created and tried to push a fresh branch to see if **Github** would accept any new refs:
+
+    git checkout -b test-push
+    git push origin test-push
+
+Result: **Github** again reported `Internal Server Error` on push; however, the branch list on the website showed that `test-push` had “recent pushes,” confirming the server was intermittently accepting refs but something about `main` remained problematic.
+
+**Step 6 — Resolve by merging healthy history onto main via Pull Request**  
+I used the web UI to create a Pull Request from `test-push` into `main`:
+
+    (on Github website)
+    base: main  ←  compare: test-push
+    Create pull request → Merge pull request → Confirm
+
+Result: `main` was updated to the good history from `test-push`.
+
+**Step 7 — Resync local and verify push works**  
+I fast-forwarded my local branch and verified pushes were clean:
+
+    git checkout main
+    git pull origin main
+    git push origin main
+
+Result: “Everything up-to-date.” Push succeeded without errors.
+
+**Step 8 — Clean up temporary branch**  
+I removed the temporary branch locally and on **Github**:
+
+    git branch -d test-push
+    git push origin --delete test-push
+
+**Reference Commands Used:**
+
+    git status
+    git remote -v
+    git ls-remote origin
+    git fsck --full
+    git push origin main
+    git checkout -b test-push
+    git push origin test-push
+    # (create Pull Request: base main ← compare test-push, then merge on Github)
+    git checkout main
+    git pull origin main
+    git push origin main
+    git branch -d test-push
+    git push origin --delete test-push
+
+**Lesson Learned:**  
+This error pointed to a server-side branch/reference problem on **Github**, not a local Git issue. The safest, path was: 
+- verify local health, confirm remote reachability, 
+- prove a clean branch can be accepted, 
+- then repair `main` via a Pull Request from the healthy branch. 
+  
+In future, when **Github** returns `Internal Server Error` during `git push`, I’ll: 
+(1) verify with `git fsck --full` and `git ls-remote origin`, 
+(2) try a temporary branch push, and 
+(3) if the issue persists, use a Pull Request to replace `main` with the known-good branch, then resync locally.
+
