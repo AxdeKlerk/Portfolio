@@ -1,6 +1,7 @@
 from django.contrib import admin
-from .models import About, Blog, Project
+from .models import About, Blog, Project, CV
 from django.contrib.admin import register
+
 
 @admin.register(About)
 class AboutAdmin(admin.ModelAdmin):
@@ -14,7 +15,14 @@ class BlogAdmin(admin.ModelAdmin):
     fields = ('title', 'summary', 'blog_image', 'content', 'author', 'published_date')
     readonly_fields = ('published_date',)
 
+
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
     list_display = ('title', 'submission_date')
     fields = ('title', 'project_image', 'description', 'deployed_project_link', 'github_link', 'submission_date')
+
+
+@admin.register(CV)
+class CVAdmin(admin.ModelAdmin):
+    list_display = ('pdf_cv_link', 'doc_cv_link')
+    fields = ('cv_image_page_1', 'cv_image_page_2', 'pdf_cv_link', 'doc_cv_link')
