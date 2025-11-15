@@ -48,6 +48,9 @@ main {
 .standard-page .hero-section {
     opacity: 0.5;
 }
+.card-body {
+    padding-bottom: 0.5rem;
+}
 .global-footer {
     flex-shrink: 0;
     bottom: 0;
@@ -187,12 +190,18 @@ main {
     display: block;
     margin-bottom: 10px;
 }
+.description-block {
+    min-height: 260px; /* adjust until perfect */
+}
+.info-block {
+    min-height: 95px; /* adjust until Grade aligns across all cards */
+}
+
 
 
 /* Blog page */
 .blog-card {
     padding: 5px;
-    margin-bottom: 20px;
     overflow: hidden;
     background-color: #a59e9e;
 }
