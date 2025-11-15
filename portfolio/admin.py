@@ -19,7 +19,7 @@ class BlogAdmin(admin.ModelAdmin):
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
     list_display = ('title', 'submission_date')
-    fields = ('title', 'project_image', 'description', 'deployed_project_link', 'github_link', 'submission_date')
+    fields = ('title', 'project_image', 'description', 'tools_used', 'grade_received', 'deployed_project_link', 'github_link', 'submission_date')
 
 
 @admin.register(CV)
