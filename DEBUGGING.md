@@ -383,7 +383,34 @@ This error pointed to a server-side branch/reference problem on **Github**, not 
 - then repair `main` via a Pull Request from the healthy branch. 
   
 In future, when **Github** returns `Internal Server Error` during `git push`, I’ll: 
-(1) verify with `git fsck --full` and `git ls-remote origin`, 
-(2) try a temporary branch push, and 
-(3) if the issue persists, use a Pull Request to replace `main` with the known-good branch, then resync locally.
+1. verify with `git fsck --full` and `git ls-remote origin`, 
+2. try a temporary branch push, and 
+3. if the issue persists, use a Pull Request to replace `main` with the known-good branch, then resync locally.
+
+---
+
+## File Handling Error
+
+**Bug:**  
+I attempted to make the PDF version of my CV downloadable through my **Django** site using a `CloudinaryField`. The PDF either returned a 404, displayed a “Failed to load PDF document” error, or returned a **Cloudinary** 401 access error. Even when the PDF existed in my admin panel, the direct link failed to load. I also noticed that my **Cloudinary** dashboard showed the asset as “Blocked for delivery.” This made it clear that the issue was not with my view, template, or routing, but with how the file was being uploaded and stored.
+
+**Fix:**  
+I debugged the issue and confirmed the file was uploading with the wrong **Cloudinary** upload preset. The preset was unintentionally set to `Unsigned`, which caused **Cloudinary** to apply restricted access rules to non-image files, including PDFs. Because of this, PDFs uploaded through **Django** were flagged and not served publicly.
+
+To resolve the issue, I:
+
+1. Went to **Cloudinary** → Settings → Upload → Upload Presets.  
+2. Opened the active preset (`hoqrv1uc`) and changed `Signing mode` from `Unsigned` back to `Signed`.  
+3. Saved the preset.  
+4. Back in **Django**, deleted the previously uploaded CV files from the admin panel so they would be removed from **Cloudinary**.  
+5. Re-uploaded the PDF and DOC files using `models.FileField(upload_to='cv/')` instead of a `CloudinaryField`.  
+6. Confirmed the new files were stored under `/media/cv/` and served directly by **Django**, avoiding **Cloudinary** restrictions entirely.
+
+After applying these steps, the download links began working correctly and the PDF loaded without errors.
+
+**Lesson Learned:**  
+This issue happened because I mixed file handling responsibilities between **Django** and **Cloudinary**. Using `CloudinaryField` for non-image documents can trigger unexpected access restrictions, especially when the upload preset is set to `Unsigned`. For downloadable documents like PDFs, storing them through **Django**’s own `FileField` is more reliable. If I ever rely on **Cloudinary** for file storage again, I should always verify the preset’s signing mode and delivery permissions before uploading.
+
+---
+
 

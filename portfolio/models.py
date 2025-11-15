@@ -35,6 +35,8 @@ class Project(models.Model):
     title = models.CharField(max_length=200, blank=False, null=False)
     project_image = CloudinaryField('image', blank=True, null=True)
     description = models.TextField(blank=False, null=False)
+    tools_used = models.CharField(max_length=300, blank=True, null=True)
+    grade_received = models.CharField(max_length=50, blank=True, null=True)
     deployed_project_link = models.URLField(blank=True, null=True)
     github_link = models.URLField(blank=True, null=True)
     submission_date = models.DateTimeField(blank=False, null=False)
@@ -44,10 +46,10 @@ class Project(models.Model):
 
 
 class CV(models.Model):
-    cv_image_page_1 = CloudinaryField('cv_image_page_1', blank=False, null=False)
+    cv_image_page_1 = CloudinaryField('cv_image_page_1', blank=True, null=True)
     cv_image_page_2 = CloudinaryField('cv_image_page_2', blank=True, null=True)
-    pdf_cv_link = CloudinaryField('pdf_cv_link', resource_type='raw', blank=False, null=False)
-    doc_cv_link = CloudinaryField('doc_cv_link', resource_type='raw', blank=True, null=True)
+    pdf_cv_link = models.FileField(upload_to='cv/', blank=False, null=True)
+    doc_cv_link = models.FileField(upload_to='cv/', blank=True, null=True)
 
     def __str__(self):
         return "CV File"

@@ -4,7 +4,7 @@
 /* Global settings */
 html, body {
     margin: 0;
-    padding: 0 0.5rem;
+    padding: 0;
     height: 100%;
     width: 100%;
     /*box-sizing: border-box;*/
@@ -56,7 +56,7 @@ main {
     text-align: center;
     background: transparent;
     z-index: 10;
-    padding: 1rem 0;
+    padding: 0;
 }
 
 /*Navbar */
@@ -146,15 +146,34 @@ main {
 
 /* CV page */
 .cv-section {
-    background-color: #a59e9e;
     margin: 0 auto;
-    padding: 0;
 }
 .cv-card {
-    padding: 5px;
     margin-bottom: 20px;
-    overflow: hidden;
     background-color: #a59e9e;
+}
+.cv-card-body {
+    padding: 5px;
+}
+.cv-img {
+    width: auto;
+    height: 100%;
+    object-fit: contain;
+}
+.btn-cv {
+    display: inline-block;
+    padding: 0.25rem 1rem;
+    line-height: 1.2;
+    color: #F5F5F5;
+    text-decoration: none;
+    font-size: 0.9rem;
+    border-radius: 2px;
+    border-color: #B22F10;
+    border-width: 2px;
+    margin-top: 10px;
+}
+.btn-cv:hover {
+    color:#B22F10;
 }
 
 /* Projects page */
@@ -163,13 +182,12 @@ main {
     border-width: 2px;
     border-style: solid;
     max-width: 500px;
-    width: 100%;
     max-height: 250px;
-    height: 100%;
     object-fit: cover;
     display: block;
     margin-bottom: 10px;
 }
+
 
 /* Blog page */
 .blog-card {
@@ -193,19 +211,6 @@ main {
     object-fit: cover;
     display: block;
     margin-bottom: 10px;
-}
-.btn-blog {
-    display: inline-block;
-    padding: 10px 15px;
-    color: #F5F5F5;
-    text-decoration: none;
-    border-radius: 2px;
-    border-color: #B22F10;
-    border-width: 2px;
-    margin-top: 10px;
-}
-.btn-blog:hover {
-    color:#B22F10;
 }
 .back-btn {
     color: #000000;
