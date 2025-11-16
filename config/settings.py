@@ -1,6 +1,5 @@
 from pathlib import Path
 import os
-from dotenv import load_dotenv
 import environ
 import cloudinary
 import cloudinary.uploader
@@ -14,22 +13,21 @@ environ.Env.read_env()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Load environment variables
-load_dotenv(BASE_DIR / '.env')
-
-SECRET_KEY = os.getenv('SECRET_KEY')
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-ENVIRONMENT = os.getenv('ENVIRONMENT', 'production')
-DEBUG = ENVIRONMENT == 'development'
+ENVIRONMENT = env("ENVIRONMENT", default="production")
+DEBUG = ENVIRONMENT == "development"
 
 print(f"Running in {ENVIRONMENT} mode — DEBUG={DEBUG}")
 
 cloudinary.config(
-    cloud_name=os.getenv('CLOUD_NAME'),
-    api_key=os.getenv('CLOUD_API_KEY'),
-    api_secret=os.getenv('CLOUD_API_SECRET'),
+    cloud_name=env("CLOUD_NAME"),
+    api_key=env("CLOUD_API_KEY"),
+    api_secret=env("CLOUD_API_SECRET"),
 )
+
 # Force Cloudinary to handle static files in production
 if ENVIRONMENT == 'production':
     STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
