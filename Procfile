@@ -1,1 +1,1 @@
-web: gunicorn config.wsgi:application
+web: pwd && ls && gunicorn config.wsgi:application
