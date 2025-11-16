@@ -28,10 +28,7 @@ cloudinary.config(
     api_secret=env("CLOUD_API_SECRET"),
 )
 
-# Force Cloudinary to handle static files in production
-if ENVIRONMENT == 'production':
-    STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
-
+# Email configuration
 EMAIL_HOST = env("EMAIL_HOST")
 EMAIL_PORT = env.int("EMAIL_PORT")
 EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS")
@@ -47,9 +44,9 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.staticfiles',
     'cloudinary',
     'cloudinary_storage',
-    'django.contrib.staticfiles',
     'portfolio',
 ]
 
