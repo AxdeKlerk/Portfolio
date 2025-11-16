@@ -7,6 +7,10 @@ import cloudinary.uploader
 import cloudinary.api
 import dj_database_url
 
+# Initialise environment variables
+env = environ.Env()
+environ.Env.read_env()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -30,8 +34,13 @@ cloudinary.config(
 if ENVIRONMENT == 'production':
     STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'portfolio-5y32.onrender.com']
+EMAIL_HOST = env("EMAIL_HOST")
+EMAIL_PORT = env.int("EMAIL_PORT")
+EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS")
+EMAIL_HOST_USER = env("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
 
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'portfolio-5y32.onrender.com']
 
 # Application definition
 INSTALLED_APPS = [

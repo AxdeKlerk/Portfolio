@@ -5,6 +5,55 @@
 {% block body_class %}standard-page{% endblock %}
 
 {% block content %}
+<div class="container">
+  <div class="row justify-content-center text-center">
 
+    <div class="col-12 text-left text-justify">
+        <p>If you would like to get in touch, please use the contact form below to send me a message. 
+        Whether you have questions about my portfolio, want to discuss potential collaborations, or simply wish to connect, 
+        I would love to hear from you!
+        </p>
+    </div>
+  </div>
+
+  <!-- Contact form -->
+<form method="POST" action="{% url 'portfolio:contact' %}" novalidate>
+    {% csrf_token %}
+    <div class="container text-start">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label for="firstName" class="cp-item">First Name:</label>
+          <input type="text" class="form-control" id="firstName" name="first_name" required>
+            
+        </div>
+        <div class="col-md-6">
+          <label for="lastName" class="cp-item">Last Name:</label>
+          <input type="text" class="form-control" id="lastName" name="last_name" required>
+                      
+        </div>
+        <div class="col-md-8">
+          <label for="email" class="cp-item">Email Address:</label>
+          <input type="email" class="form-control" id="email" placeholder="you@example.com" name="email" required>
+            
+        </div>
+        <div class="col-md-4">
+          <label for="phone" class="cp-item">Phone Number:</label>
+          <input type="text" class="form-control" id="phone" name="phone" placeholder="+44 77123456789">
+        </div>
+
+        <div class="col-12">
+          <label for="message" class="cp-item">Message:</label>
+          <textarea class="form-control" id="message" name="message" rows="5" placeholder="Please add your message, comments, feedback or questions here..." required></textarea>
+        </div>
+
+  <!-- Hidden input field to pass custom parameters -->
+      <div class="row align-items-start">
+        <div class="col-6">
+          <button type="submit" class="btn btn-cv">Send</button>
+        </div>
+      </div>
+    </div>  
+  </form>
+</div>
 
 {% endblock %}

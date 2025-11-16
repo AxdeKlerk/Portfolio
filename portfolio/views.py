@@ -1,8 +1,10 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import About, Blog, Project, CV
 from django.http import FileResponse, Http404
 import mimetypes
 import os
+from django.core.mail import send_mail
+from django.contrib import messages
 
 
 def home(request):
@@ -67,4 +69,34 @@ def download_cv_doc(request):
 
 
 def contact(request):
-    return render(request, 'portfolio/contact.html', {'page': contact})
+    if request.method == "POST":
+        first = request.POST.get("first_name")
+        last = request.POST.get("last_name")
+        email = request.POST.get("email")
+        phone = request.POST.get("phone")
+        message = request.POST.get("message")
+
+        full_message = f"""
+        New message from your portfolio contact form:
+
+        Name: {first} {last}
+        Email: {email}
+        Phone: {phone}
+
+        Message:
+        {message}
+                """
+
+        send_mail(
+            subject="New Portfolio Contact Form Submission",
+            message=full_message,
+            from_email="axdeklerk@gmail.com",   # your email
+            recipient_list=["axdeklerk@gmail.com"],  # where it should arrive
+        )
+
+        # For now: just show a success message  
+        messages.success(request, "Thank you — your message has been sent! I will reply as soon as humanly possible.")
+
+        return redirect("portfolio:contact")
+
+    return render(request, "portfolio/contact.html", {"page": "contact"})

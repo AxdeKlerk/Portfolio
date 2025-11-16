@@ -125,6 +125,15 @@ main {
     width: auto;
     z-index: 5;
 }
+.hero-bottom-img {
+    position: absolute;
+    top: calc(50% + 40px); /* moves it BELOW the centered first image */
+    left: 50%;
+    transform: translateX(-50%) rotate(2deg);
+    height: 50px;
+    width: auto;
+    z-index: 5;
+}
 .home-page .global-footer a{
     color: #A59E9E;
 }
