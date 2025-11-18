@@ -413,4 +413,109 @@ This issue happened because I mixed file handling responsibilities between **Dja
 
 ---
 
+## Environment Variable Loading Error
+
+**Bug:**  
+Over the course of three days I attempted to diagnose a series of increasingly confusing and misleading errors caused by **Django** failing to load my environment variables from `.env`. The symptoms appeared unrelated at first: `You must set settings.ALLOWED_HOSTS if DEBUG is False`, `The SECRET_KEY setting must not be empty`, missing attributes like `settings.ENVIRONMENT`, and even failures where `settings.BASE_DIR` did not exist.  
+
+The first signal that something was fundamentally wrong came from the fact that *none* of the expected variables defined in my `.env` file were being read. Running commands such as:
+
+    python manage.py shell -c "from django.conf import settings; print(settings.ENVIRONMENT)"
+
+constantly resulted in errors indicating the attribute did not exist. Any attempt to print settings attributes failed because **Django** never successfully imported the full `config/settings.py` file. The root crash always happened during this line:
+
+    SECRET_KEY = env("SECRET_KEY")
+
+When this line failed, the entire settings module aborted before completion. Because **Django** couldn’t load settings, it silently fell back to `LazySettings`. That fallback state created a chain reaction:
+
+- `ENVIRONMENT` didn’t exist  
+- `DEBUG` defaulted to `False`  
+- `ALLOWED_HOSTS` didn’t load  
+- Template context processors didn’t load  
+- Even basic values like `BASE_DIR` and `__file__` weren’t available  
+- `manage.py` commands produced misleading secondary errors  
+
+This failure mode made the debugging process extremely difficult because **every error message pointed to the wrong thing**. The problem was not ALLOWED_HOSTS, DEBUG, or any missing attribute — the problem was that settings never finished importing at all.
+
+As I tried to track the cause, the following confusing behaviours appeared:
+
+- Rewriting `.env` had no effect.  
+- Deleting `.env` entirely had no effect.  
+- Creating a new `.env` file still caused the same corrupted string to appear.  
+- Restarting VS Code did not help.  
+- Restarting PowerShell did not help.  
+- Even rebooting the entire machine did not help.  
+- Checking `Env:` in PowerShell showed no system-level `SECRET_KEY`.  
+- Checking the Registry showed no `SECRET_KEY`.  
+- Searching the entire user directory revealed multiple `.env` files but none contained the corrupted value.  
+- `settings.__file__` could not be printed because the module never imported.  
+- `from config import settings` always triggered the same error, even after full resets.  
+
+The corrupted value that caused the crash looked like:
+
+    !p5s65i&)@t6kw-^=k=(i0_s7+p@hz(ub$g^x%ur52d#e!1n@
+
+This value did not exist in any `.env` file across my system. It also did not exist in environment variables, registry keys, venv activation scripts, or VS Code launch configurations. Yet **Django** consistently reported that value as the environment variable name it was trying to read, indicating that the first line of `.env` was being parsed incorrectly.
+
+This eventually indicated a deeper issue: the `.env` file inside the project directory was being read incorrectly — not ignored, but read in a corrupted form.
+
+**Fix:**  
+The breakthrough came only after isolating the exact place the failure occurred. Importing the settings module directly via:
+
+    python
+    >>> from importlib import import_module
+    >>> import_module("config.settings")
+
+produced the same corrupted SECRET_KEY error long before **Django** loaded anything else. This confirmed the failure was specifically occurring during the environment-loading phase and not during URL routing, template loading, or any of the other errors I initially suspected.
+
+I then recreated the `.env` file multiple times, but the corrupted value continued to appear. After eliminating every external cause (VS Code extension `.env` files, Windows registry variables, stray project copies, wrong interpreter paths, and backups), the only remaining possibility was that the `.env` file itself contained invisible characters that `django-environ` was failing to interpret.
+
+The file was saved in the wrong **text encoding**, most likely UTF-16 with a hidden BOM (byte-order mark) added by Windows or a previous editor. This meant:
+
+- The first character of `.env` wasn’t actually `S` from `SECRET_KEY=`  
+- It was a non-printable BOM  
+- `django-environ` interpreted that as part of the variable name  
+- It treated the variable name as the corrupted string  
+- It failed to match it to any variable defined in memory  
+- It threw the `ImproperlyConfigured` error  
+- The entire import process halted  
+
+This explained why the corrupted string appeared even after deleting and recreating the file: the new `.env` was still written using the same bad encoding unless explicitly saved as UTF-8.
+
+To fix the problem permanently, I:
+
+1. Deleted the `.env` file entirely.  
+2. Created a brand new `.env` file manually inside VS Code.  
+3. Used VS Code’s encoding controls to ensure the file was saved as **UTF-8 (no BOM)**.  
+4. Inserted the environment variables manually, beginning with `SECRET_KEY=` as the first character in the file.  
+5. Regenerated a fresh Django secret key using Python:
+
+        python -c "import secrets, string; chars=string.ascii_letters+string.digits+string.punctuation; print(''.join(secrets.choice(chars) for _ in range(50)))"
+
+6. Saved the `.env` file again, confirming UTF-8 encoding.  
+7. Fully restarted VS Code (closing all windows).  
+8. Reactivated the virtual environment.  
+9. Tested settings import using:
+
+        python manage.py shell -c "from django.conf import settings; print(settings.SECRET_KEY[:10] + '...')"
+
+Once this worked, **Django** finally loaded the `.env` correctly, settings imported fully, and `ENVIRONMENT`, `DEBUG`, and `ALLOWED_HOSTS` all behaved as expected.
+
+A secondary issue appeared afterward: a `ModuleNotFoundError` for `portfolio.context_processors.about_data`. This occurred because the file had been accidentally deleted earlier. I restored it as:
+
+    from .models import About
+
+    def about_data(request):
+        try:
+            about = About.objects.first()
+        except About.DoesNotExist:
+            about = None
+        return {'about': about}
+
+Restarting the server resolved the final error, and the entire project loaded normally.
+
+**Lesson Learned:**  
+When **Django** refuses to load environment variables, and especially when `settings.py` fails at the first call to `env("SECRET_KEY")`, the most important step is to verify the encoding of `.env`. A single file saved with a BOM or incorrect encoding can cause cascading failures that appear unrelated. If `settings.py` fails early, **Django** silently enters `LazySettings`, hiding the real failure and generating misleading errors across unrelated subsystems.
+  
+From now on, I will always ensure that `.env` files are created as UTF-8 (no BOM), contain no blank lines at the top, and are validated using direct imports (`import_module("config.settings")`). This prevents multi-day debugging cascades caused by hidden characters and ensures **Django** loads the intended configuration each time.
 
