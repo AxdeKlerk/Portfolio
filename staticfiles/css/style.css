@@ -1,0 +1,325 @@
+/*Google fonts import code*/
+@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap');
+
+/* Global settings */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    /*box-sizing: border-box;*/
+    font-family: 'Geist Mono', monospace;
+    color: #000000;
+    font-size: 14px;
+    /*font-weight: 200;*/
+}
+main {
+    flex: 1 0 auto;
+    width: 100%;
+    margin: 0;
+    padding: 2rem 0;
+}
+/* Default for all pages */
+.site-frame {
+    position: relative;
+    width: 100%;
+    max-width: 1800px;
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+/* Default hero for all pages */
+.hero-section {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('../images/background.jpg') center/cover no-repeat;
+    z-index: -1;
+}
+.standard-page .site-frame {
+    height: auto;
+    min-height: 100vh;
+    overflow-y: auto;
+}
+.standard-page .hero-section {
+    opacity: 0.5;
+}
+.card-body {
+    padding-bottom: 0.5rem;
+}
+.global-footer {
+    flex-shrink: 0;
+    bottom: 0;
+    width: 100%;
+    color: #000000;
+    text-align: center;
+    background: transparent;
+    z-index: 10;
+    padding: 0;
+}
+
+/*Navbar */
+.navbar {
+    position: relative;
+    width: 100%;
+    z-index: 10;
+    background: transparent !important;
+    padding: 1rem 0;
+}
+.navbar-icons {
+    gap: 2rem;
+    padding-top: 1rem;
+}
+.nav-img {
+    height: 30px;
+    width: auto;
+    transition: transform 0.3s ease;
+    transform-origin: center center;
+}
+.navbar-icons a:nth-child(1) .nav-img {
+    transform: rotate(-2deg);
+}
+.navbar-icons a:nth-child(2) .nav-img {
+    transform: rotate(2deg);
+}
+.navbar-icons a:nth-child(3) .nav-img {
+    transform: rotate(-3deg);
+}
+.navbar-icons a:nth-child(4) .nav-img {
+    transform: rotate(1deg);
+}
+.navbar-icons a:nth-child(5) .nav-img {
+    transform: rotate(-3deg);
+}
+.nav-img:hover {
+    transform: rotate(0deg) scale(1.1) !important;
+}
+.icon-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1 0 30%; /* allows wrapping on small screens */
+    text-decoration: none;
+    flex: 0 0 auto; /* prevents wrapping */
+}
+
+/* Home page */
+.home-page .site-frame {
+    height: 100vh;
+    max-height: 936px;
+    overflow: hidden;
+}
+.home-page .hero-section {
+    opacity: 1;
+}
+.hero-center-img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 50px;
+    width: auto;
+    z-index: 5;
+}
+.hero-bottom-img {
+    position: absolute;
+    top: calc(50% + 40px); /* moves it BELOW the centered first image */
+    left: 50%;
+    transform: translateX(-50%) rotate(2deg);
+    height: 50px;
+    width: auto;
+    z-index: 5;
+}
+.home-page .global-footer a{
+    color: #A59E9E;
+}
+
+/* About */
+.about-section {
+    background-color: #a59e9e;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+.about-img {
+    border-color: #E0A029;
+    border-width: 5px;
+    border-style: solid;
+    padding: 5px;
+    background-color: #110F07;
+    max-width: 300px;
+}
+.text-justify {
+    text-align: justify;
+}
+
+/* CV page */
+.cv-section {
+    margin: 0 auto;
+}
+.cv-card {
+    margin-bottom: 20px;
+    background-color: #a59e9e;
+}
+.cv-card-body {
+    padding: 5px;
+}
+.cv-img {
+    width: auto;
+    height: 100%;
+    object-fit: contain;
+}
+.btn-cv {
+    display: inline-block;
+    padding: 0.25rem 1rem;
+    line-height: 1.2;
+    color: #F5F5F5;
+    text-decoration: none;
+    font-size: 0.9rem;
+    border-radius: 2px;
+    border-color: #B22F10;
+    border-width: 2px;
+    margin-top: 10px;
+}
+.btn-cv:hover {
+    color:#B22F10;
+}
+
+/* Projects page */
+.project-img {
+    border-color: #B22F10;
+    border-width: 2px;
+    border-style: solid;
+    max-width: 500px;
+    max-height: 250px;
+    object-fit: cover;
+    display: block;
+    margin-bottom: 10px;
+}
+.description-block {
+    min-height: 260px; /* adjust until perfect */
+}
+.info-block {
+    min-height: 95px; /* adjust until Grade aligns across all cards */
+}
+
+
+
+/* Blog page */
+.blog-card {
+    padding: 5px;
+    overflow: hidden;
+    background-color: #a59e9e;
+}
+.blog-card:hover {
+    transform: translateY(-5px);
+    transition: transform 0.2s ease-in-out;
+}
+.blog-img {
+    border-color: #B22F10;
+    border-width: 2px;
+    border-style: solid;
+    max-width: 450px;
+    width: 100%;
+    max-height: 200px;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    margin-bottom: 10px;
+}
+.back-btn {
+    color: #000000;
+    text-decoration: none;
+}
+.back-btn:hover {
+    color: #f5f5f5;
+}
+.blog-detail-card{
+    background-color: #A59E9E;
+}
+.blog-detail-img {
+    border-color: #B22F10;
+    border-width: 3px;
+    border-style: solid;
+    max-height: 450px;
+    width: 100%;
+    object-fit: cover;
+    display: block;
+}
+.blog-text {
+    color: #000000;
+}
+
+
+/*Contact page */
+
+
+/* Footer */
+.footer-contact {
+    margin-bottom: 10px;
+}
+.footer-contact a:nth-child(1) .nav-img {
+    transform: rotate(-1deg);
+}
+.links {
+    margin: 1rem;
+    text-decoration: none;
+    color: #110F07;
+    border: 12px;
+    border-top-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-color: #110F07;
+    border-width: 3px;
+    border-style: solid;
+}
+.links:hover {
+    color: #f5f5f5;
+}
+
+/* Media Queries */
+
+/* On small screens */
+@media (max-width: 768px) {
+    .navbar-icons {
+        gap: 3rem;
+        padding-top: 2.5rem;
+    }
+    .nav-img {
+        height: 2rem;
+    }
+}
+
+/* On medium screens */
+@media (min-width: 768px) {
+    .navbar-icons {
+        gap: 3.1rem;
+        padding-top: 2.8rem;
+    }
+    .nav-img {
+        height: 2rem;
+    }
+}
+
+/* On larger screens and above: make them one line */
+@media (min-width: 1024px) {
+    .navbar-icons {
+        gap: 4rem;
+        padding-top: 3rem;
+    }
+    .nav-img {
+        height: 2.1rem;
+    }
+}
+/* On extra large screens and above */
+@media (min-width: 1440px) {
+    .navbar-icons {
+        gap: 4.5rem;
+        padding-top: 3.2rem;
+    }
+    .nav-img {
+        height: 2.2rem;
+    }
+}
